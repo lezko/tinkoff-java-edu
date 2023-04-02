@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.linkparser;
+package ru.tinkoff.edu.java.linkparser.parsingresult;
 
 public class StackOverflowParsingResult extends ParsingResult {
     public int id;

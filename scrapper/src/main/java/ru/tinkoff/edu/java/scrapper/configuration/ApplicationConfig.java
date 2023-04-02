@@ -1,4 +1,4 @@
-package configuration;
+package ru.tinkoff.edu.java.scrapper.configuration;
 
 import jakarta.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;

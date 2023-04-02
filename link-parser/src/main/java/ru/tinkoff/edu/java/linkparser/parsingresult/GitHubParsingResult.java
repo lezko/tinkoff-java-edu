@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.linkparser;
+package ru.tinkoff.edu.java.linkparser.parsingresult;
 
 public class GitHubParsingResult extends ParsingResult {
     public String user;
