@@ -1,7 +1,10 @@
 app:
   test: bot-test-string
+  botToken: ${TOKEN}
+
 server:
   port: 8180
+
 springdoc:
   api-docs:
     enabled: true
