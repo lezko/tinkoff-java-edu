@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.bot.dto.response;
+package ru.tinkoff.edu.java.scrapper.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,10 +1,11 @@
-package ru.tinkoff.edu.java.scrapper.dto.response;
+package ru.tinkoff.edu.java.scrapper.dto.request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class AddLinkRequest {
+    @NotNull
     private String link;
 }
