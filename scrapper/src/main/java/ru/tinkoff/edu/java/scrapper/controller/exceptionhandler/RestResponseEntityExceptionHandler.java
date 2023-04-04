@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import ru.tinkoff.edu.java.scrapper.controller.exception.LinkNotFoundException;
+import ru.tinkoff.edu.java.scrapper.controller.exception.TgChatNotFoundException;
 import ru.tinkoff.edu.java.scrapper.dto.response.ApiErrorResponse;
 
 import java.util.Arrays;
@@ -43,7 +45,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(value = { MissingRequestHeaderException.class })
-    public ResponseEntity<Object> handle(MissingRequestHeaderException ex, WebRequest request) {
+    public ResponseEntity<Object> handleMissingRequestHeaderException(MissingRequestHeaderException ex, WebRequest request) {
         ApiErrorResponse res = new ApiErrorResponse(
             "Invalid request parameters",
             "400",
@@ -53,5 +55,18 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         );
 
         return handleExceptionInternal(ex, res, new HttpHeaders(), HttpStatusCode.valueOf(400), request);
+    }
+
+    @ExceptionHandler(value = { TgChatNotFoundException.class, LinkNotFoundException.class })
+    public ResponseEntity<Object> handleNotFoundException(RuntimeException ex, WebRequest request) {
+        ApiErrorResponse res = new ApiErrorResponse(
+            "Not found",
+            "404",
+            ex.getClass().getName(),
+            ex.getMessage(),
+            Arrays.stream(ex.getStackTrace()).map(String::valueOf).toList()
+        );
+
+        return handleExceptionInternal(ex, res, new HttpHeaders(), HttpStatusCode.valueOf(404), request);
     }
 }

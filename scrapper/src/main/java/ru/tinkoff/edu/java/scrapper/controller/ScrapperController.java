@@ -2,6 +2,8 @@ package ru.tinkoff.edu.java.scrapper.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
+import ru.tinkoff.edu.java.scrapper.controller.exception.LinkNotFoundException;
+import ru.tinkoff.edu.java.scrapper.controller.exception.TgChatNotFoundException;
 import ru.tinkoff.edu.java.scrapper.dto.request.AddLinkRequest;
 import ru.tinkoff.edu.java.scrapper.dto.request.RemoveLinkRequest;
 import ru.tinkoff.edu.java.scrapper.dto.response.LinkResponse;
@@ -17,7 +19,7 @@ public class ScrapperController {
     @DeleteMapping("/tg-chat/{id}")
     public void deleteChat(@Valid @PathVariable long id) {
         System.out.println(id);
-        // todo handle 404
+        throw new TgChatNotFoundException();
     }
 
     @GetMapping("/links")
@@ -33,7 +35,7 @@ public class ScrapperController {
 
     @DeleteMapping("/links")
     public LinkResponse deleteLink(@Valid @RequestBody RemoveLinkRequest req, @Valid @RequestHeader("Tg-Chat-Id") long id) {
-        return new LinkResponse();
-        // todo handle 404
+//        return new LinkResponse();
+        throw new LinkNotFoundException();
     }
 }
