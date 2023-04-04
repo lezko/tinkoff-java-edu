@@ -1,2 +1,4 @@
 app:
   test: scrapper-test-string
+  scheduler:
+    interval: 3000
