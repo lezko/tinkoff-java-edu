@@ -10,6 +10,16 @@ public class GitHubParsingResult extends ParsingResult {
     }
 
     @Override
+    public int hashCode() {
+        return (user + repo).hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return getClass().equals(obj.getClass()) && hashCode() == obj.hashCode();
+    }
+
+    @Override
     public String toString() {
         return "user: " + user + ", repo: " + repo;
     }

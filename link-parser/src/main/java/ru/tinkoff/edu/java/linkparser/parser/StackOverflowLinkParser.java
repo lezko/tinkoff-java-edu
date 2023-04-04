@@ -11,7 +11,7 @@ public class StackOverflowLinkParser extends LinkParser {
     @Override
     public ParsingResult parse(String url) {
         if (url.startsWith(LINK_PREFIX)) { // 36
-            String s = url.substring(LINK_PREFIX.length(), url.length() - 1);
+            String s = url.substring(LINK_PREFIX.length());
             String[] arr = s.split("/");
             return new StackOverflowParsingResult(Integer.parseInt(arr[QUESTION_ID_IDX]));
         }
