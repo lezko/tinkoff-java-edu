@@ -3,7 +3,7 @@ app:
   botToken: ${TOKEN}
 
 server:
-  port: 8180
+  port: 8001
 
 springdoc:
   api-docs:
