@@ -16,44 +16,12 @@ import java.util.List;
 public class TgBot implements Bot {
 
     private final TelegramBot bot;
+    private final List<Command> commands;
 
     public TgBot(String botToken, List<Command> commands) {
         bot = new TelegramBot(botToken);
-        System.out.println(commands.size());
-        bot.setUpdatesListener(new UserMessageProcessor() {
-            @Override
-            public int process(List<Update> list) {
-                for (Update update : list) {
-//                    SendMessage req = new SendMessage(
-//                        update.message().chat().id(),
-//                        "Command not supported"
-//                    );
-                    for (Command c : commands) {
-                        System.out.println(update.message().text());
-                        if (c.supports(update)) {
-                            System.out.println(update.message().text());
-                            SendMessage req = c.handle(update);
-                            bot.execute(req);
-
-                            break;
-                        }
-                    }
-//                    bot.execute(req);
-                }
-                return UpdatesListener.CONFIRMED_UPDATES_ALL;
-            }
-
-            @Override
-            public List<? extends Command> commands() {
-                return null;
-            }
-
-            @Override
-            public SendMessage process(Update update) {
-
-                return null;
-            }
-        });
+        this.commands = commands;
+        start();
     }
 
     @Override
@@ -68,11 +36,40 @@ public class TgBot implements Bot {
 
     @Override
     public void start() {
+        bot.setUpdatesListener(new UserMessageProcessor() {
+            @Override
+            public int process(List<Update> list) {
+                for (Update update : list) {
+                    SendMessage req = new SendMessage(
+                        update.message().chat().id(),
+                        "Command not supported"
+                    );
+                    System.out.println(update.message().text());
+                    for (Command c : commands) {
+                        if (c.supports(update)) {
+                            req = c.handle(update);
+                            break;
+                        }
+                    }
+                    bot.execute(req);
+                }
+                return UpdatesListener.CONFIRMED_UPDATES_ALL;
+            }
 
+            @Override
+            public List<? extends Command> commands() {
+                return null;
+            }
+
+            @Override
+            public SendMessage process(Update update) {
+                return null;
+            }
+        });
     }
 
     @Override
     public void close() {
-
+        bot.removeGetUpdatesListener();
     }
 }

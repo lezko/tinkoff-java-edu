@@ -8,10 +8,19 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 public class HelpCommand implements Command {
-    @Autowired
+
     private List<Command> commands;
+
+    private void setupCommands() {
+        commands = List.of(
+            new StartCommand(),
+            new HelpCommand(),
+            new TrackCommand(),
+            new UntrackCommand(),
+            new ListCommand()
+        );
+    }
 
     @Override
     public String command() {
@@ -25,6 +34,9 @@ public class HelpCommand implements Command {
 
     @Override
     public SendMessage handle(Update update) {
+        if (commands == null) {
+            setupCommands();
+        }
         long chatId = update.message().chat().id();
         StringBuilder s = new StringBuilder();
         for (Command c : commands) {
