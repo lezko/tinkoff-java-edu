@@ -8,6 +8,16 @@ public class StackOverflowParsingResult extends ParsingResult {
     }
 
     @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return getClass().equals(obj.getClass()) && hashCode() == hashCode();
+    }
+
+    @Override
     public String toString() {
         return "id: " + id;
     }
