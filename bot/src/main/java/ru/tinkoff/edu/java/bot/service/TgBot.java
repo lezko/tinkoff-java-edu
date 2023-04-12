@@ -8,8 +8,10 @@ import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.tinkoff.edu.java.bot.service.command.Command;
+import ru.tinkoff.edu.java.bot.client.ScrapperClient;
+import ru.tinkoff.edu.java.bot.service.command.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -18,10 +20,26 @@ public class TgBot implements Bot {
     private final TelegramBot bot;
     private final List<Command> commands;
 
-    public TgBot(String botToken, List<Command> commands) {
+    @Autowired
+    private ScrapperClient client;
+
+    public TgBot(String botToken) {
         bot = new TelegramBot(botToken);
-        this.commands = commands;
+        commands = createCommands();
         start();
+    }
+
+    private List<Command> createCommands() {
+        HelpCommand helpCommand = new HelpCommand();
+        List<Command> commandList = Arrays.asList(
+            new StartCommand(),
+            helpCommand,
+            new TrackCommand(),
+            new UntrackCommand(),
+            new ListCommand()
+        );
+        helpCommand.setCommands(commandList);
+        return commandList;
     }
 
     @Override

@@ -2,12 +2,14 @@ package ru.tinkoff.edu.java.bot.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.tinkoff.edu.java.bot.client.ScrapperClient;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class ClientConfiguration {
+    private static final String DEFAULT_URL = "http://localhost:8002";
+
     @Bean
-    public ScrapperClient scrapperClient() {
-        return ScrapperClient.create();
+    public WebClient webClient() {
+        return WebClient.builder().baseUrl(DEFAULT_URL).build();
     }
 }

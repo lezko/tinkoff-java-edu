@@ -1,43 +1,38 @@
 package ru.tinkoff.edu.java.bot.client;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 import ru.tinkoff.edu.java.bot.client.dto.request.AddLinkRequest;
 import ru.tinkoff.edu.java.bot.client.dto.request.RemoveLinkRequest;
 import ru.tinkoff.edu.java.bot.client.dto.response.ListLinksResponse;
+import ru.tinkoff.edu.java.bot.service.exception.LinkNotFoundException;
 
 import java.util.Objects;
 
-@RequiredArgsConstructor
+
+@Component
 public class ScrapperClient {
-    private static final String DEFAULT_URL = "http://localhost:8002";
-
-    private final WebClient webClient;
-
-    public static ScrapperClient create() {
-        return create(DEFAULT_URL);
-    }
-
-    public static ScrapperClient create(String baseUrl) {
-        WebClient webClient = WebClient.builder().baseUrl(baseUrl).build();
-        return new ScrapperClient(webClient);
-    }
+    @Autowired
+    private WebClient webClient;
 
     public void addChat(long tgChatId) {
-        String path = "/links/" + String.valueOf(tgChatId);
+        String path = "/links/" + tgChatId;
         webClient.post()
             .uri(path)
             .retrieve();
     }
 
     public void deleteChat(long tgChatId) {
-        String path = "/link/" + String.valueOf(tgChatId);
+        String path = "/link/" + tgChatId;
         webClient.delete()
             .uri(path)
             .retrieve();
-            // todo exception handling
     }
 
     public ListLinksResponse fetchLinks(long tgChatId) {
@@ -60,6 +55,14 @@ public class ScrapperClient {
             .header("Tg-Chat-Id", String.valueOf(tgChatId))
             .body(BodyInserters.fromValue(request))
             .retrieve();
+            // todo remove
+//            .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
+//                System.out.println("error");
+//                if (clientResponse.statusCode().equals(HttpStatusCode.valueOf(404))) {
+//                    return Mono.error(LinkNotFoundException::new);
+//                }
+//                return Mono.error(RuntimeException::new);
+//            });
     }
 
     public void stopTrackingLink(long tgChatId, String link) {
@@ -69,7 +72,13 @@ public class ScrapperClient {
             .uri(path)
             .header("Tg-Chat-Id", String.valueOf(tgChatId))
             .body(BodyInserters.fromValue(request))
-            .retrieve();
-            // todo exception handling
+            .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
+                System.out.println("error");
+                if (clientResponse.statusCode().equals(HttpStatusCode.valueOf(404))) {
+                    return Mono.error(LinkNotFoundException::new);
+                }
+                return Mono.error(RuntimeException::new);
+            });
     }
 }

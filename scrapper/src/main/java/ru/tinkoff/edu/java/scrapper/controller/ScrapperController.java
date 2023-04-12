@@ -39,12 +39,16 @@ public class ScrapperController {
 
     @PostMapping("/links")
     public LinkResponse addLink(@Valid @RequestBody AddLinkRequest req, @Valid @RequestHeader("Tg-Chat-Id") long id) {
+        System.out.println(req);
+        System.out.println(id);
+//        throw new LinkNotFoundException();
         return new LinkResponse();
     }
 
     @DeleteMapping("/links")
     public LinkResponse deleteLink(@Valid @RequestBody RemoveLinkRequest req, @Valid @RequestHeader("Tg-Chat-Id") long id) {
 //        return new LinkResponse();
+        System.out.println("scrapper error");
         throw new LinkNotFoundException();
     }
 
