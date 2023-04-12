@@ -2,8 +2,10 @@ package ru.tinkoff.edu.java.bot.service;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
+import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.BaseRequest;
+import com.pengrad.telegrambot.request.SetMyCommands;
 import com.pengrad.telegrambot.response.BaseResponse;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.bot.service.command.CommandsInitializer;
@@ -18,6 +20,13 @@ public class TgBot implements Bot {
 
     public TgBot(String botToken, CommandsInitializer initializer) {
         bot = new TelegramBot(botToken);
+        bot.execute(new SetMyCommands(
+            initializer
+                .commands()
+                .stream()
+                .map(c -> new BotCommand(c.command(), c.description()))
+                .toArray(BotCommand[]::new))
+        );
         processor = new MessageProcessor(initializer.commands());
         start();
     }
