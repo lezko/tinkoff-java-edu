@@ -4,42 +4,22 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.BaseRequest;
-import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.BaseResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import ru.tinkoff.edu.java.bot.client.ScrapperClient;
-import ru.tinkoff.edu.java.bot.service.command.*;
+import org.springframework.stereotype.Service;
+import ru.tinkoff.edu.java.bot.service.command.CommandsInitializer;
 
-import java.util.Arrays;
 import java.util.List;
 
-@Component
+@Service
 public class TgBot implements Bot {
 
     private final TelegramBot bot;
-    private final List<Command> commands;
+    private final MessageProcessor processor;
 
-    @Autowired
-    private ScrapperClient client;
-
-    public TgBot(String botToken) {
+    public TgBot(String botToken, CommandsInitializer initializer) {
         bot = new TelegramBot(botToken);
-        commands = createCommands();
+        processor = new MessageProcessor(initializer.commands());
         start();
-    }
-
-    private List<Command> createCommands() {
-        HelpCommand helpCommand = new HelpCommand();
-        List<Command> commandList = Arrays.asList(
-            new StartCommand(),
-            helpCommand,
-            new TrackCommand(),
-            new UntrackCommand(),
-            new ListCommand()
-        );
-        helpCommand.setCommands(commandList);
-        return commandList;
     }
 
     @Override
@@ -54,35 +34,11 @@ public class TgBot implements Bot {
 
     @Override
     public void start() {
-        bot.setUpdatesListener(new UserMessageProcessor() {
-            @Override
-            public int process(List<Update> list) {
-                for (Update update : list) {
-                    SendMessage req = new SendMessage(
-                        update.message().chat().id(),
-                        "Command not supported"
-                    );
-                    System.out.println(update.message().text());
-                    for (Command c : commands) {
-                        if (c.supports(update)) {
-                            req = c.handle(update);
-                            break;
-                        }
-                    }
-                    bot.execute(req);
-                }
-                return UpdatesListener.CONFIRMED_UPDATES_ALL;
+        bot.setUpdatesListener(list -> {
+            for (Update update : list) {
+                bot.execute(processor.process(update));
             }
-
-            @Override
-            public List<? extends Command> commands() {
-                return null;
-            }
-
-            @Override
-            public SendMessage process(Update update) {
-                return null;
-            }
+            return UpdatesListener.CONFIRMED_UPDATES_ALL;
         });
     }
 

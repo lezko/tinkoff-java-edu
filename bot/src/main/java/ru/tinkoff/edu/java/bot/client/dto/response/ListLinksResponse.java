@@ -13,4 +13,13 @@ import java.util.List;
 public class ListLinksResponse {
     private List<LinkResponse> links = new LinkedList<>();
     private int size;
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (LinkResponse link : links) {
+            sb.append(link.getUrl()).append("\n");
+        }
+        return sb.toString();
+    }
 }
