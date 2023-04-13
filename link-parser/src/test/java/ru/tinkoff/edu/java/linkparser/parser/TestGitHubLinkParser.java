@@ -22,22 +22,25 @@ public class TestGitHubLinkParser {
     }
 
     @Test
-    void test() {
-        // valid
+    void invalid1() {
+        String url = "https://github.com/trending";
+        ParsingResult result = parser.parse(url);
+        assertNull(result);
+    }
+
+    @Test
+    void invalid2() {
+        String url = "https://github.com/explore";
+        ParsingResult result = parser.parse(url);
+        assertNull(result);
+    }
+
+    @Test
+    void valid() {
         String url = "https://github.com/lezko/tanks-game";
         ParsingResult result = parser.parse(url);
         assertNotNull(result);
         GitHubParsingResult ghResult = (GitHubParsingResult) result;
         assertEquals(new GitHubParsingResult("lezko", "tanks-game"), ghResult);
-
-        // not valid
-        url = "https://github.com/trending";
-        result = parser.parse(url);
-        assertNull(result);
-
-        // not valid
-        url = "https://github.com/explore";
-        result = parser.parse(url);
-        assertNull(result);
     }
 }

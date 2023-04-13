@@ -23,22 +23,25 @@ public class TestStackOverflowLinkParser {
     }
 
     @Test
-    void test() {
-        // valid
+    void invalid1() {
+        String url = "https://stackoverflow.com/jobs/companies/warner-bros-discovery";
+        ParsingResult result = parser.parse(url);
+        assertNull(result);
+    }
+
+    @Test
+    void invalid2() {
+        String url = "https://stackoverflow.com/tags";
+        ParsingResult result = parser.parse(url);
+        assertNull(result);
+    }
+
+    @Test
+    void valid() {
         String url = "https://stackoverflow.com/questions/75934265/how-to-type-onchange-in-react-select";
         ParsingResult result = parser.parse(url);
         assertNotNull(result);
         StackOverflowParsingResult ghResult = (StackOverflowParsingResult) result;
         assertEquals(new StackOverflowParsingResult(75934265), ghResult);
-
-        // not valid
-        url = "https://stackoverflow.com/tags";
-        result = parser.parse(url);
-        assertNull(result);
-
-        // not valid
-        url = "https://stackoverflow.com/jobs/companies/warner-bros-discovery";
-        result = parser.parse(url);
-        assertNull(result);
     }
 }
