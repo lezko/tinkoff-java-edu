@@ -34,11 +34,15 @@ public class ScrapperController {
     @GetMapping("/links")
     public ListLinksResponse getLinks(@Valid @RequestHeader("Tg-Chat-Id") long id) {
         System.out.println(id);
-        return new ListLinksResponse();
+
+        ListLinksResponse listLinksResponse = new ListLinksResponse();
+        listLinksResponse.getLinks().add(new LinkResponse(42, "hello"));
+        return listLinksResponse;
     }
 
     @PostMapping("/links")
     public LinkResponse addLink(@Valid @RequestBody AddLinkRequest req, @Valid @RequestHeader("Tg-Chat-Id") long id) {
+//        throw new LinkNotFoundException();
         return new LinkResponse();
     }
 

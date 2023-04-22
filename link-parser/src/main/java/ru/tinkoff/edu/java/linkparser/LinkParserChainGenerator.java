@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class LinkParserChainGenerator {
-    static LinkParser generate(Collection<LinkParser> parsers) {
+    public static LinkParser generate(Collection<LinkParser> parsers) {
         LinkParser prev = null, head = null;
         for (LinkParser parser : parsers) {
             if (prev == null) {
