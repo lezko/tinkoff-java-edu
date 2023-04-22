@@ -1,7 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.client;
 
 import org.springframework.web.reactive.function.client.WebClient;
-import ru.tinkoff.edu.java.scrapper.client.dto.GitHubResponse;
 import ru.tinkoff.edu.java.scrapper.client.dto.StackOverflowListResponse;
 import ru.tinkoff.edu.java.scrapper.client.dto.StackOverflowResponse;
 

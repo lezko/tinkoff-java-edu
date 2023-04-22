@@ -2,15 +2,15 @@ package ru.tinkoff.edu.java.bot.service.command;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.bot.client.ScrapperClient;
 import ru.tinkoff.edu.java.bot.client.dto.response.ListLinksResponse;
 
+@RequiredArgsConstructor
+@Component
 public class ListCommand implements Command {
     private final ScrapperClient client;
-
-    public ListCommand(ScrapperClient client) {
-        this.client = client;
-    }
 
     @Override
     public String command() {

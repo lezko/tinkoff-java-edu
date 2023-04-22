@@ -5,7 +5,9 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.tinkoff.edu.java.bot.client.ScrapperClient;
 import ru.tinkoff.edu.java.bot.client.dto.response.LinkResponse;
 import ru.tinkoff.edu.java.bot.client.dto.response.ListLinksResponse;
@@ -15,19 +17,22 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class ListCommandTest {
-    @Test
-    void checkEmptyList() {
-        long mockTgChatId = 0;
-        ScrapperClient client = mock(ScrapperClient.class);
-        Update update = mock(Update.class);
-        Message msg = mock(Message.class);
-        Chat chat = mock(Chat.class);
+    @Mock
+    private ScrapperClient client;
+    @Mock
+    private Update update;
+    @Mock
+    private Message msg;
+    @Mock
+    private Chat chat;
 
+    @Test
+    public void checkEmptyList() {
+        long mockTgChatId = 0;
         when(client.fetchLinks(mockTgChatId)).thenReturn(new ListLinksResponse());
 
         when(update.message()).thenReturn(msg);
@@ -42,12 +47,8 @@ public class ListCommandTest {
     }
 
     @Test
-    void checkFormatting() {
+    public void checkFormatting() {
         long mockTgChatId = 0;
-        ScrapperClient client = mock(ScrapperClient.class);
-        Update update = mock(Update.class);
-        Message msg = mock(Message.class);
-        Chat chat = mock(Chat.class);
 
         List<String> urls = Arrays.asList(
             "https://github.com/user/repo1",

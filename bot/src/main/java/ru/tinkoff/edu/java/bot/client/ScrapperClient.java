@@ -1,6 +1,6 @@
 package ru.tinkoff.edu.java.bot.client;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -15,9 +15,9 @@ import java.util.Objects;
 
 
 @Component
+@RequiredArgsConstructor
 public class ScrapperClient {
-    @Autowired
-    private WebClient webClient;
+    private final WebClient webClient;
 
     public void addChat(long tgChatId) {
         String path = "/tg-chat/" + tgChatId;

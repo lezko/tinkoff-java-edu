@@ -5,6 +5,7 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ru.tinkoff.edu.java.bot.service.MessageProcessor;
@@ -18,14 +19,18 @@ public class UnsupportedCommandTest {
     @Autowired
     private CommandsInitializer initializer;
 
+    @Mock
+    private Update update;
+    @Mock
+    private Message msg;
+    @Mock
+    private Chat chat;
+
     @Test
     void checkUnsupported() {
         MessageProcessor processor = new MessageProcessor(initializer.commands());
 
         String unsupportedCommand = "/create";
-        Update update = mock(Update.class);
-        Message msg = mock(Message.class);
-        Chat chat = mock(Chat.class);
 
         when(update.message()).thenReturn(msg);
         when(msg.text()).thenReturn(unsupportedCommand);

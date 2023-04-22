@@ -1,29 +1,33 @@
 package ru.tinkoff.edu.java.bot.service.command;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.tinkoff.edu.java.bot.client.ScrapperClient;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class CommandsInitializer {
-    private final List<Command> commands;
+    private List<Command> commands;
 
-    public CommandsInitializer(ScrapperClient client) {
-        HelpCommand helpCommand = new HelpCommand();
-        List<Command> commandList = Arrays.asList(
-            new StartCommand(client),
-            helpCommand,
-            new TrackCommand(client),
-            new UntrackCommand(client),
-            new ListCommand(client)
-        );
-        helpCommand.setCommands(commandList);
-        commands = commandList;
-    }
+    private final StartCommand startCommand;
+    private final HelpCommand helpCommand;
+    private final TrackCommand trackCommand;
+    private final UntrackCommand untrackCommand;
+    private final ListCommand listCommand;
 
     public List<Command> commands() {
+        if (commands == null) {
+            commands = Arrays.asList(
+                startCommand,
+                helpCommand,
+                trackCommand,
+                untrackCommand,
+                listCommand
+            );
+            helpCommand.setCommands(commands);
+        }
         return commands;
     }
 }

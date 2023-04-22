@@ -3,14 +3,12 @@ package ru.tinkoff.edu.java.linkparser.parser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.tinkoff.edu.java.linkparser.LinkParserChainGenerator;
-import ru.tinkoff.edu.java.linkparser.parsingresult.GitHubParsingResult;
 import ru.tinkoff.edu.java.linkparser.parsingresult.ParsingResult;
 import ru.tinkoff.edu.java.linkparser.parsingresult.StackOverflowParsingResult;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class TestStackOverflowLinkParser {
     private LinkParser parser;
