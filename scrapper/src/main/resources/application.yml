@@ -1,4 +1,17 @@
 app:
   test: scrapper-test-string
+  database-access-type: jdbc
   scheduler:
     interval: 3000
+
+server:
+  port: 8002
+
+spring:
+  liquibase:
+    enabled: false
+  datasource:
+    url: jdbc:postgresql://localhost:5432/scrapper
+    username: root
+    password: root
+    driver-class-name: org.postgresql.Driver
