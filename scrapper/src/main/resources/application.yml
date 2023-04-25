@@ -1,5 +1,6 @@
 app:
   test: scrapper-test-string
+  database-access-type: jdbc
   scheduler:
     interval: 3000
 
